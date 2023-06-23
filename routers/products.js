@@ -12,6 +12,12 @@ router.get('/bestselling', async (req, res) => {
     res.send(response)
 })
 
+router.get('/search', async (req, res) => {
+    const { filters } = req.body
+    const products = await database.filterProducts(filters)
+    res.send(products)
+})
+
 router.get('/:id', async (req, res) => {
     const prod = await database.getProduct(req.params.id)
     res.send(prod)
