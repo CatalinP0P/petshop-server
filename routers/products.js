@@ -12,8 +12,9 @@ router.get('/bestselling', async (req, res) => {
     res.send(response)
 })
 
-router.get('/search', async (req, res) => {
+router.post('/search', async (req, res) => {
     const { filters } = req.body
+
     const products = await database.filterProducts(filters)
     res.send(products)
 })

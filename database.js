@@ -51,8 +51,9 @@ const incrementSales = async (productID) => {
 }
 
 const filterProducts = async (filters) => {
+    console.log(filters)
     const { q, category, minPrice, maxPrice } = filters
-    
+
     const query = {}
     if (q) query.title = { $regex: q, $options: 'i' }
     if (category) query.category = { $regex: category, $options: 'i' }
