@@ -19,6 +19,9 @@ app.get('/', async (req, res) => {
 const productsRouter = require('./routers/products')
 app.use('/products', productsRouter)
 
+const cartRouter = require('./routers/cart')
+app.use('/cart', firebaseValidation.validateIdToken, cartRouter)
+
 app.listen(3001, () => {
     console.log('Server running on port 3001')
 })

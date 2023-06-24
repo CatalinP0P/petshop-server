@@ -2,6 +2,7 @@ const { ObjectId } = require('mongodb')
 const db = require('./lib/mongodb')
 const { response } = require('express')
 const products = db.collection('Products')
+const cart = db.collection('Cart')
 
 const getAllProducts = async () => {
     try {
@@ -51,8 +52,7 @@ const incrementSales = async (productID) => {
 }
 
 const filterProducts = async (filters) => {
-    console.log(filters)
-    const { q, category, minPrice, maxPrice } = filters
+    const { q, category, minPrice, maxPrice, limit } = filters
 
     const query = {}
     if (q) query.title = { $regex: q, $options: 'i' }
@@ -60,19 +60,26 @@ const filterProducts = async (filters) => {
     if (minPrice) query.price = { $gte: minPrice }
     if (maxPrice) query.price = { ...query.price, $lte: maxPrice }
 
-    console.log(query)
-
-    const response = await products.find(query).toArray()
+    const response = await products
+        .find(query)
+        .limit(limit ? limit : 10000)
+        .toArray()
 
     return response
+}
+
+const createCart = async (userID) => {
+    const response = await cart.insertOne({ userId: userID, products: [] })
+    return response.insertedId
 }
 
 module.exports = {
     getAllProducts: getAllProducts,
     getProduct: getProduct,
-
     insertProduct: insertProduct,
     getBestSelling: getBestSelling,
     incrementSales: incrementSales,
     filterProducts: filterProducts,
+    
+    createCart: createCart,
 }
