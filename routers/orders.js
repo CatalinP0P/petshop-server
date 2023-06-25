@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const firebaseValidation = require('../validation/firebaseValidation')
 
 const { ObjectId } = require('mongodb')
 const mongo = require('../lib/mongodb')
@@ -6,8 +7,15 @@ const mongo = require('../lib/mongodb')
 const cart = mongo.collection('Cart')
 const orders = mongo.collection('Orders')
 
-router.get('/', async (req, res) => {
-    res.send('Getting all orders')
+router.get('/', firebaseValidation.validateIdToken, async (req, res) => {
+    const userId = req.user.uid
+    const x = await orders
+        .find({ userId: userId })
+        .sort({ createdAt: -1 })
+        .toArray()
+
+        console.log(x)
+    res.send(x)
 })
 
 router.post('/', async (req, res) => {
