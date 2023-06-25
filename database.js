@@ -80,6 +80,6 @@ module.exports = {
     getBestSelling: getBestSelling,
     incrementSales: incrementSales,
     filterProducts: filterProducts,
-    
+
     createCart: createCart,
 }

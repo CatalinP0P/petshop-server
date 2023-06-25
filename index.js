@@ -22,6 +22,9 @@ app.use('/products', productsRouter)
 const cartRouter = require('./routers/cart')
 app.use('/cart', firebaseValidation.validateIdToken, cartRouter)
 
+const ordersRouter = require('./routers/orders')
+app.use('/orders', ordersRouter)
+
 app.listen(3001, () => {
     console.log('Server running on port 3001')
 })
